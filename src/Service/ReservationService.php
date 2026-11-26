@@ -6,7 +6,6 @@ use App\Entity\Soiree;
 use App\Entity\Utilisateur;
 use App\Repository\ReservationRepository;
 use DateTimeImmutable;
-use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ReservationService
@@ -19,35 +18,30 @@ class ReservationService
 
     public function reserverSoiree(Utilisateur $utilisateur, Soiree $soiree): Reservation
     {
+        $reservationExistante = $this->reservationRepository->findOneBy([
+            'utilisateur' => $utilisateur,
+            'soiree' => $soiree,
+        ]);
+        if ($reservationExistante) {
+            throw new \RuntimeException('Vous avez déjà réservé cette soirée.');
+        }
 
-        return $this->em->wrapInTransaction(function () use ($utilisateur, $soiree): Reservation {
-            $this->em->lock($soiree, LockMode::PESSIMISTIC_WRITE);
+        $nombreReservations = $this->reservationRepository->count(['soiree' => $soiree]);
+        if ($nombreReservations >= $soiree->getNbMaxParticipants()) {
+            throw new \RuntimeException('Toutes les places pour cette soirée sont réservées.');
+        }
 
-            $empruntExistant = $this->reservationRepository->findOneBy([
-                'utilisateur' => $utilisateur,
-                'soiree' => $soiree,
-            ]);
-            if ($empruntExistant) {
-                throw new \RuntimeException('Vous avez déjà réservé cette soirée.');
-            }
+        $reservation = new Reservation();
+        $reservation->setUtilisateur($utilisateur);
+        $reservation->setSoiree($soiree);
+        $reservation->setDateReservation(new DateTimeImmutable());
 
-            $nombreReservations = $this->reservationRepository->count(['soiree' => $soiree]);
-            if ($nombreReservations >= $soiree->getNbMaxParticipants()) {
-                throw new \RuntimeException('Toutes les places pour cette soirée sont réservées.');
-            }
+        $utilisateur->addReservation($reservation);
+        $soiree->addReservation($reservation);
 
-            $reservation = new Reservation();
-            $reservation->setUtilisateur($utilisateur);
-            $reservation->setSoiree($soiree);
-            $reservation->setDateReservation(new DateTimeImmutable());
+        $this->em->persist($reservation);
+        $this->em->flush();
 
-            $utilisateur->addReservation($reservation);
-            $soiree->addReservation($reservation);
-
-            $this->em->persist($reservation);
-            $this->em->flush();
-
-            return $reservation;
-        });
+        return $reservation;
     }
 }
