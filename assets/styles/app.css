@@ -1,3 +1,7 @@
+*{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
 .msg-success {
     color: green;
     font-weight: 700;

@@ -15,6 +15,29 @@
             <h4>Jeu : {{ soiree.jeu.titre }}</h4>
             <p>Date : {{ soiree.dateSoiree|date('d/m/Y') }}</p>
             <p>Participants max : {{ soiree.nbMaxParticipants }}</p>
+            <p>Participants inscrits : {{ soiree.reservations|length }}</p>
+
+            {% if is_granted('ROLE_USER') %}
+                {% set dejaReserve = false %}
+                {% for reservation in soiree.reservations %}
+                    {% if reservation.utilisateur.id == app.user.id %}
+                        {% set dejaReserve = true %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if dejaReserve %}
+                    <p><strong>Vous êtes déjà inscrit.</strong></p>
+                {% elseif soiree.reservations|length >= soiree.nbMaxParticipants %}
+                    <p><strong>Complet</strong></p>
+                {% else %}
+                    <form action="{{ path('app_reservation', { id: soiree.id }) }}" method="post">
+                        <input type="hidden" name="_token" value="{{ csrf_token('reserver_' ~ soiree.id) }}">
+                        <button type="submit">Réserver</button>
+                    </form>
+                {% endif %}
+            {% else %}
+                <p><a href="{{ path('app_login') }}">Connectez-vous pour réserver</a></p>
+            {% endif %}
         </div>
         {% endfor %}
     </div>  

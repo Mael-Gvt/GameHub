@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes réservations{% endblock %}
+
+{% block body %}
+    <h1>Mes réservations</h1>
+
+    {% if reservations is empty %}
+        <p>Vous n'avez pas encore de réservation.</p>
+    {% else %}
+        <ul>
+            {% for reservation in reservations %}
+                <li>
+                    <strong>{{ reservation.soiree.nom }}</strong>
+                    — {{ reservation.soiree.jeu.titre }}
+                    — soirée du {{ reservation.soiree.dateSoiree|date('d/m/Y') }}
+                    — réservée le {{ reservation.dateReservation|date('d/m/Y') }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <a href="{{ path('app_soirees') }}">Voir les soirées</a>
+{% endblock %}
