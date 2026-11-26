@@ -20,22 +20,29 @@ body {
     background-color: black;
 }
 
+.site-header::after {
+    content: "";
+    display: block;
+    height: 1rem;
+    margin: 0 -1rem -1rem;
+    background: linear-gradient(to bottom, #000, #fff);
+}
+
 .site-navigation {
     display: flex;
     flex-direction: raw;
     justify-content: end;
     gap: 2rem;
+    padding-bottom: 0.5rem;
 }
 
 .nav-button {
     display: inline-block;
-    padding: 0.5rem 1rem;
     border-radius: 0.25rem;
     background-color: #ffffff;
     color: black;
     text-decoration: none;
-    padding-left: 30px;
-    padding-right: 30px;
+    padding: 5px 30px 5px 30px;
 }
 
 .nav-button:hover,

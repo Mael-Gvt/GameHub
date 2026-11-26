@@ -9,26 +9,26 @@
         <p>{{ message }}</p>
     {% endfor %} 
 
-    <form action="" method="POST">
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('register') }}">
+    <form action="" method="POST" style="margin-left: 20px">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('register') }}" style="padding:5px">
 
         <label for="nom">Nom</label>
-        <input type="text" id="nom" name="nom">
+        <input type="text" id="nom" name="nom" style="padding:5px">
 
         <label for="prenom">Prénom</label>
-        <input type="text" id="prenom" name="prenom">
+        <input type="text" id="prenom" name="prenom" style="padding:5px">
 
         <label for="eamil">Email</label>
-        <input type="email" id="email" name="email">
+        <input type="email" id="email" name="email" style="padding:5px">
 
         <label for="mdp">Mot de passe</label>
-        <input type="password" id="mdp" name="mdp">
+        <input type="password" id="mdp" name="mdp" style="padding:5px">
 
-        <button type="submit">Créer un compte</button>
+        <button type="submit" style="padding:5px; cursor:pointer">Créer un compte</button>
 
         <p>
             Déjà inscrit ?
-            <a href="{{ path('app_login') }}">Se connecter</a>
+            <a href="{{ path('app_login') }}" style="padding:5px">Se connecter</a>
         </p>
     </form>
 

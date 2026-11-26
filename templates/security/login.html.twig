@@ -3,7 +3,7 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-    <form method="post">
+    <form method="post" style="margin-left: 20px">
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
@@ -16,17 +16,17 @@
 
         <h1 class="h3 mb-3 font-weight-normal">Connectez vous</h1>
         <label for="username">Email</label>
-        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
+        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus style="padding:5px">
         <label for="password">Password</label>
-        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required style="padding:5px">
+        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}" style="padding:5px">
 
     
 
-        <button class="btn btn-lg btn-primary" type="submit">
+        <button class="btn btn-lg btn-primary" type="submit" style="padding:5px; cursor:pointer">
             Connexion
         </button>
     </form>
 
-    <a class="btn btn-lg btn-secondary" href="{{ path('app_enregistrement') }}">Créer un compte</a>
+    <a class="btn btn-lg btn-secondary" href="{{ path('app_enregistrement') }} " style="margin-left: 20px">Créer un compte</a>
 {% endblock %}
