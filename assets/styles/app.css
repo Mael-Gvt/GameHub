@@ -1,3 +1,8 @@
-body {
-    background-color: skyblue;
+.msg-success {
+    color: green;
+    font-weight: 700;
+}
+.msg-erreur {
+    color: red;
+    font-weight: 700;
 }

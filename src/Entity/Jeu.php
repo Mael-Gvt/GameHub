@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\JeuRepository;
-use BcMath\Number;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -23,14 +22,14 @@ class Jeu
     #[ORM\Column(type: Types::TEXT, nullable: false)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::NUMBER, precision: 10, scale: 0, nullable: false)]
-    private ?Number $nbJoueurs = null;
+    #[ORM\Column(length: 255)]
+    private ?string $nbJoueurs = null;
 
-    #[ORM\Column(type: Types::NUMBER, precision: 10, scale: 2, nullable: false)]
-    private ?Number $dureeMoyenne = null;
+    #[ORM\Column(length: 255)]
+    private ?string $dureeMoyenne = null;
 
-    #[ORM\Column(type: Types::NUMBER, precision: 10, scale: 0, nullable: false)]
-    private ?Number $ageMinimum = null;
+    #[ORM\Column(length: 255)]
+    private ?string $ageMinimum = null;
 
     /**
      * @var Collection<int, Soiree>
@@ -41,15 +40,15 @@ class Jeu
     /**
      * @var Collection<int, Categorie>
      */
-    #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'jeu')]
-    #[ORM\JoinTable(name:'oeuvre_categorie')] 
-    private Collection $categorie;
+    #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'jeux')]
+    #[ORM\JoinTable(name:'jeu_categorie')] 
+    private Collection $categories;
 
 
     public function __construct()
     {
         $this->soirees = new ArrayCollection();
-        $this->categorie = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -81,36 +80,35 @@ class Jeu
         return $this;
     }
 
-    public function getNbJoueurs(): ?Number
+    public function getNbJoueurs(): ?string
     {
         return $this->nbJoueurs;
     }
 
-    public function setNbJoueurs(Number $nbJoueurs): static
+    public function setNbJoueurs(string $nbJoueurs): static
     {
         $this->nbJoueurs = $nbJoueurs;
 
         return $this;
     }
 
-    public function getDureeMoyenne(): ?Number
+    public function getDureeMoyenne(): ?string
     {
         return $this->dureeMoyenne;
     }
 
-    public function setDureeMoyenne(Number $dureeMoyenne): static
+    public function setDureeMoyenne(string $dureeMoyenne): static
     {
         $this->dureeMoyenne = $dureeMoyenne;
 
         return $this;
     }
 
-    public function getAgeMinimum(): ?Number
+    public function getAgeMinimum(): ?string
     {
         return $this->ageMinimum;
     }
-
-    public function setAgeMinimum(Number $ageMinimum): static
+    public function setAgeMinimum(string $ageMinimum): static
     {
         $this->ageMinimum = $ageMinimum;
 
@@ -147,22 +145,22 @@ class Jeu
         return $this;
     }
 
-    public function getCategorie(): ?Categorie
+    public function getCategories(): Collection
     {
-        return $this->categorie;
+        return $this->categories;
     }
 
-    public function setCategorie(?Categorie $categorie): static
-    {
-        $this->categorie = $categorie;
+    // public function setCategories(?Categorie $categories): static
+    // {
+    //     $this->categories = $categories;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function addCategorie(Categorie $categorie): static
     {
-        if (!$this->categorie->contains($categorie)) {
-            $this->categorie->add($categorie);
+        if (!$this->categories->contains($categorie)) {
+            $this->categories->add($categorie);
         }
 
         return $this;
@@ -170,7 +168,7 @@ class Jeu
 
     public function removeCategorie(Categorie $categorie): static
     {
-        $this->categorie->removeElement($categorie);
+        $this->categories->removeElement($categorie);
 
         return $this;
     }

@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\SoireeRepository;
-use BcMath\Number;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -17,11 +16,14 @@ class Soiree
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
+
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: false)]
     private ?\DateTimeImmutable $dateSoiree = null;
 
-    #[ORM\Column(type: Types::NUMBER, precision: 10, scale: 0, nullable: false)]
-    private ?Number $nbMaxParticipants = null;
+    #[ORM\Column(type: Types::INTEGER, precision: 10, scale: 0, nullable: false)]
+    private ?int $nbMaxParticipants = null;
 
     /**
      * @var Collection<int, Reservation>
@@ -43,6 +45,18 @@ class Soiree
         return $this->id;
     }
 
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
     public function getDateSoiree(): ?\DateTimeImmutable
     {
         return $this->dateSoiree;
@@ -55,12 +69,12 @@ class Soiree
         return $this;
     }
 
-    public function getNbMaxParticipants(): ?Number
+    public function getNbMaxParticipants(): ?int
     {
         return $this->nbMaxParticipants;
     }
 
-    public function setNbMaxParticipants(Number $nbMaxParticipants): static
+    public function setNbMaxParticipants(int $nbMaxParticipants): static
     {
         $this->nbMaxParticipants = $nbMaxParticipants;
 

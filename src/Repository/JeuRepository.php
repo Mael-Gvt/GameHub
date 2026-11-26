@@ -16,6 +16,19 @@ class JeuRepository extends ServiceEntityRepository
         parent::__construct($registry, Jeu::class);
     }
 
+    /**
+     * @return Jeu[]
+     */
+    public function rechercheParTitre(string $titre): array
+    {
+        return $this->createQueryBuilder('jeu')
+            ->andWhere('jeu.titre LIKE :titre')
+            ->setParameter('titre', '%'.$titre.'%')
+            ->orderBy('jeu.titre', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Jeu[] Returns an array of Jeu objects
 //     */

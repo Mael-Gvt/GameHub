@@ -18,10 +18,10 @@ class UtilisateurCrudController extends AbstractCrudController
         return Utilisateur::class;
     }
 
-    public function configureActions(Actions $actions): Actions
-    {
-        return $actions->disable(Action::NEW);
-    }
+    // public function configureActions(Actions $actions): Actions
+    // {
+    //     return $actions->disable(Action::NEW);
+    // }
 
     public function configureFields(string $pageName): iterable
     {

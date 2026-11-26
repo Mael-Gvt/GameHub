@@ -7,10 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
-class Utilisateur
+class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -103,7 +105,7 @@ class Utilisateur
         return $this;
     }
 
-    public function getMdp(): ?string
+    public function getPassword(): ?string
     {
         return $this->mdp;
     }
@@ -114,6 +116,12 @@ class Utilisateur
 
         return $this;
     }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
 
     /**
      * @return Collection<int, Reservation>

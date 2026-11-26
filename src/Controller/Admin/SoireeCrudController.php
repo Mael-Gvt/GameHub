@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class SoireeCrudController extends AbstractCrudController
 {
@@ -22,6 +23,7 @@ class SoireeCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
+            TextField::new('nom')->setLabel('Nom'),
             DateField::new('dateSoiree')->setLabel('Date de la soirée'),
             NumberField::new('nbMaxParticipants')
                 ->setLabel('Nombre maximal de participants')

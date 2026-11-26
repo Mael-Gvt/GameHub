@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Toutes les Soirées{% endblock %}
+
+{% block body %}
+<h1>La liste des soirées :</h1>
+
+{% if soirees is empty %}
+    <p>Aucune soirée trouvée.</p>
+{% else %}
+    <div display="wrap" style="display: flex; flex-wrap: wrap; gap: 20px;">  
+        {% for soiree in soirees %}
+        <div style="border: 2px solid black; margin-bottom: 10px; padding: 10px; width: 200px; border-radius: 5px;">
+            <h3>{{ soiree.nom }}</h3>
+            <h4>Jeu : {{ soiree.jeu.titre }}</h4>
+            <p>Date : {{ soiree.dateSoiree|date('d/m/Y') }}</p>
+            <p>Participants max : {{ soiree.nbMaxParticipants }}</p>
+        </div>
+        {% endfor %}
+    </div>  
+{% endif %}
+
+{% endblock %}

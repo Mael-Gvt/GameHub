@@ -21,13 +21,13 @@ class Categorie
     /**
      * @var Collection<int, Jeu>
      */
-    #[ORM\ManyToMany(targetEntity: Jeu::class, mappedBy: 'categorie')]
-    private Collection $jeu;
+    #[ORM\ManyToMany(targetEntity: Jeu::class, mappedBy: 'categories')]
+    private Collection $jeux;
 
 
     public function __construct()
     {
-        $this->jeu = new ArrayCollection();
+        $this->jeux = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -47,19 +47,24 @@ class Categorie
         return $this;
     }
 
+    public function __toString(): string
+    {
+        return $this->nom ?? '';
+    }
+
     /**
      * @return Collection<int, Jeu>
      */
-    public function getJeus(): Collection
+    public function getJeux(): Collection
     {
-        return $this->jeu;
+        return $this->jeux;
     }
 
     public function addJeu(Jeu $jeu): static
     {
-        if (!$this->jeus->contains($jeu)) {
-            $this->jeus->add($jeu);
-            $jeu->setCategorie($this);
+        if (!$this->jeux->contains($jeu)) {
+            $this->jeux->add($jeu);
+            $jeu->addCategorie($this);
         }
 
         return $this;
@@ -67,11 +72,8 @@ class Categorie
 
     public function removeJeu(Jeu $jeu): static
     {
-        if ($this->jeus->removeElement($jeu)) {
-            // set the owning side to null (unless already changed)
-            if ($jeu->getCategorie() === $this) {
-                $jeu->setCategorie(null);
-            }
+        if ($this->jeux->removeElement($jeu)) {
+            $jeu->removeCategorie($this);
         }
 
         return $this;
