@@ -44,4 +44,10 @@ class ReservationService
 
         return $reservation;
     }
+
+    public function annulerReservation(Reservation $reservation): void
+    {
+        $this->em->remove($reservation);
+        $this->em->flush();
+    }
 }

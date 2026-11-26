@@ -15,6 +15,10 @@
                     — {{ reservation.soiree.jeu.titre }}
                     — soirée du {{ reservation.soiree.dateSoiree|date('d/m/Y') }}
                     — réservée le {{ reservation.dateReservation|date('d/m/Y') }}
+                    <form action="{{ path('app_reservation_annuler', { id: reservation.id }) }}" method="post">
+                        <input type="hidden" name="_token" value="{{ csrf_token('annuler_reservation_' ~ reservation.id) }}">
+                        <button type="submit">Annuler la réservation</button>
+                    </form>
                 </li>
             {% endfor %}
         </ul>

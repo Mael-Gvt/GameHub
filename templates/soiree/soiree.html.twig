@@ -8,7 +8,7 @@
 {% if soirees is empty %}
     <p>Aucune soirée trouvée.</p>
 {% else %}
-    <div display="wrap" style="display: flex; flex-wrap: wrap; gap: 20px;">  
+    <div display="wrap" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-around">  
         {% for soiree in soirees %}
         <div style="border: 2px solid black; margin-bottom: 10px; padding: 10px; width: 200px; border-radius: 5px;">
             <h3>{{ soiree.nom }}</h3>

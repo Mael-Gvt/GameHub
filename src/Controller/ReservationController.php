@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Reservation;
 use App\Entity\Soiree;
 use App\Entity\Utilisateur;
 use App\Service\ReservationService;
@@ -25,6 +26,33 @@ final class ReservationController extends AbstractController
         return $this->render('reservation/reservation.html.twig', [
             'reservations' => $utilisateur->getReservations(),
         ]);
+    }
+
+    #[IsGranted('ROLE_USER')]
+    #[Route('/reservation/{id}/annuler', name: 'app_reservation_annuler', methods: ['POST'])]
+    public function annuler(
+        Request $request,
+        Reservation $reservation,
+        ReservationService $reservationService
+    ): Response {
+        $utilisateur = $this->getUser();
+        if (!$utilisateur instanceof Utilisateur) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if (!$this->isCsrfTokenValid(
+            'annuler_reservation_' . $reservation->getId(),
+            $request->request->get('_token')
+        )) {
+            $this->addFlash('error', 'Jeton de sécurité invalide');
+
+            return $this->redirectToRoute('app_reservation_index');
+        }
+
+        $reservationService->annulerReservation($reservation);
+        $this->addFlash('success', 'Réservation annulée.');
+
+        return $this->redirectToRoute('app_reservation_index');
     }
 
     #[IsGranted('ROLE_USER')]
